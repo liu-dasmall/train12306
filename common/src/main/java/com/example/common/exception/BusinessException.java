@@ -17,7 +17,7 @@ public class BusinessException extends RuntimeException {
     }
 
     /**
-     * 不写入堆栈信息，提高性能
+     * 对于已知的异常，我们不打印具体的堆栈信息，提高性能
      */
     @Override
     public Throwable fillInStackTrace() {

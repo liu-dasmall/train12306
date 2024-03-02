@@ -5,6 +5,8 @@ package com.example.member.service;/*
  *
  */
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.*;
 import com.example.common.exception.BusinessException;
 import com.example.common.response.CommonResponse;
 import com.example.member.domain.Member;
@@ -32,16 +34,15 @@ public class MemberService {
         MemberExample memberExample = new MemberExample();
         memberExample.createCriteria().andMobileEqualTo(mobile);
         List<Member> members = memberMapper.selectByExample(memberExample);
-//        if(ColUtils.isNotEmpty(members)){
-//            return -999;
-//        }
-        if(members != null && members.size() !=0){
+        if(CollUtil.isNotEmpty(members)){
             throw new BusinessException(MEMBER_MOBILE_EXIST);
         }
 
+
         Member member = new Member();
         member.setMobile(mobile);
-        member.setId(System.currentTimeMillis());
+        long id = IdUtil.getSnowflake(1, 1).nextId();
+        member.setId(id);
         int insert = memberMapper.insert(member);
         response.setContent((long)insert);
         response.setMessage("注册成功");

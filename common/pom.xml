@@ -53,6 +53,7 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+<!--        spring自带的请求校验框架-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
