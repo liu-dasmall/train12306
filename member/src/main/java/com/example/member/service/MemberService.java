@@ -5,9 +5,13 @@ package com.example.member.service;/*
  *
  */
 
+import com.example.member.domain.Member;
+import com.example.member.domain.MemberExample;
 import com.example.member.mapper.MemberMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MemberService {
@@ -18,7 +22,22 @@ public class MemberService {
     }
 
     public long register(String mobile){
-        if(memberMapper.sel)
+
+        MemberExample memberExample = new MemberExample();
+        memberExample.createCriteria().andMobileEqualTo(mobile);
+        List<Member> members = memberMapper.selectByExample(memberExample);
+//        if(ColUtils.isNotEmpty(members)){
+//            return -999;
+//        }
+        if(members != null && members.size() !=0){
+            return -999;
+        }
+
+        Member member = new Member();
+        member.setMobile(mobile);
+        member.setId(System.currentTimeMillis());
+        int insert = memberMapper.insert(member);
+        return insert;
 
     }
 }

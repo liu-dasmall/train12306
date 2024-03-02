@@ -20,4 +20,9 @@ public class MemberConterller {
     public long hello(){
         return memberService.getMemberCount();
     }
+
+    @GetMapping("/register")
+    public long register(String mobile){
+        return memberService.register(mobile);
+    }
 }

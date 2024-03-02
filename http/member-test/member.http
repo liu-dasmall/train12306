@@ -2,3 +2,6 @@ GET http://localhost:8000/member/member/count
 Accept: application/json
 
 ###
+
+GET http://localhost:8000/member/member/register?mobile=666
+Accept: application/json
