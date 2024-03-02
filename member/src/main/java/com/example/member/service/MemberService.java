@@ -5,9 +5,11 @@ package com.example.member.service;/*
  *
  */
 
+import com.example.common.response.CommonResponse;
 import com.example.member.domain.Member;
 import com.example.member.domain.MemberExample;
 import com.example.member.mapper.MemberMapper;
+import com.example.member.req.MemberRegisterReq;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +23,9 @@ public class MemberService {
         return memberMapper.countByExample(null);
     }
 
-    public long register(String mobile){
-
+    public CommonResponse register(MemberRegisterReq registerReq){
+        CommonResponse<Long> response = new CommonResponse<>();
+        String mobile = registerReq.getMobile();
         MemberExample memberExample = new MemberExample();
         memberExample.createCriteria().andMobileEqualTo(mobile);
         List<Member> members = memberMapper.selectByExample(memberExample);
@@ -30,14 +33,19 @@ public class MemberService {
 //            return -999;
 //        }
         if(members != null && members.size() !=0){
-            return -999;
+            response.setSuccess(false);
+            response.setContent(-999L);
+            response.setMessage("手机号已经被注册了");
+            return response;
         }
 
         Member member = new Member();
         member.setMobile(mobile);
         member.setId(System.currentTimeMillis());
         int insert = memberMapper.insert(member);
-        return insert;
+        response.setContent((long)insert);
+        response.setMessage("注册成功");
+        return response;
 
     }
 }
