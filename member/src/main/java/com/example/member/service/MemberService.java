@@ -5,6 +5,7 @@ package com.example.member.service;/*
  *
  */
 
+import com.example.common.exception.BusinessException;
 import com.example.common.response.CommonResponse;
 import com.example.member.domain.Member;
 import com.example.member.domain.MemberExample;
@@ -14,6 +15,8 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.example.common.exception.BusinessExceptionEnum.MEMBER_MOBILE_EXIST;
 
 @Service
 public class MemberService {
@@ -33,10 +36,7 @@ public class MemberService {
 //            return -999;
 //        }
         if(members != null && members.size() !=0){
-            response.setSuccess(false);
-            response.setContent(-999L);
-            response.setMessage("手机号已经被注册了");
-            return response;
+            throw new BusinessException(MEMBER_MOBILE_EXIST);
         }
 
         Member member = new Member();
