@@ -13,7 +13,12 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     @Resource
     private MemberMapper memberMapper;
-    public int getMemberCount(){
-        return memberMapper.count();
+    public long getMemberCount(){
+        return memberMapper.countByExample(null);
+    }
+
+    public long register(String mobile){
+        if(memberMapper.sel)
+
     }
 }

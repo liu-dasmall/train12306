@@ -17,7 +17,7 @@ public class MemberConterller {
     @Resource
     private MemberService memberService;
     @GetMapping("/count")
-    public int hello(){
+    public long hello(){
         return memberService.getMemberCount();
     }
 }
