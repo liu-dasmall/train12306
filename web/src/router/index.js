@@ -1,28 +1,35 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 
 // 页面路由配置
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
+const routes = [{
+  path: '/login',
+  component: () => import('../views/LoginView.vue')
+}, {
+  path: '/',
+  component: () => import('../views/MainView.vue'),
+  meta: {
+    loginRequire: true
   },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import( '../views/LoginView.vue')
+  children: [{
+    path: 'welcome',
+    component: () => import('../views/main/the-welcome.vue'),
   }
-]
+  // , {
+  //   path: 'passenger',
+  //   component: () => import('../views/main/passenger.vue'),
+  // }, {
+  //   path: 'ticket',
+  //   component: () => import('../views/main/ticket.vue'),
+  // }, {
+  //   path: 'order',
+  //   component: () => import('../views/main/order.vue'),
+  // }
+  ]
+}, {
+  path: '',
+  redirect: '/welcome'
+}];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

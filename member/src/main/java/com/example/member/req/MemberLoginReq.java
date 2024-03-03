@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Pattern;
 
 public class MemberLoginReq {
     @NotBlank
-    @Pattern(regexp = "^1\\d{10}$", message = "手机号格式错误")
+//    @Pattern(regexp = "^1\\d{10}$", message = "手机号格式错误")
     private String Mobile;
 
     @NotBlank

@@ -5,6 +5,7 @@ package com.example.member.service;/*
  *
  */
 
+import cn.hutool.jwt.*;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.*;
@@ -14,7 +15,6 @@ import com.example.common.dto.MobileCodeInfo;
 import com.example.common.exception.BusinessException;
 import com.example.common.exception.BusinessExceptionEnum;
 import com.example.common.response.CommonResponse;
-import com.example.member.controller.MemberConterller;
 import com.example.member.domain.Member;
 import com.example.member.domain.MemberExample;
 import com.example.member.mapper.MemberMapper;
@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.common.exception.BusinessExceptionEnum.MEMBER_MOBILE_EXIST;
 
@@ -78,7 +79,8 @@ public class MemberService {
             memberMapper.insert(member);
         }
 //        生成四位验证码
-        String code = RandomUtil.randomString(4);
+//        String code = RandomUtil.randomString(4);
+        String code = "8888";
         LOG.info("验证码是{}", code);
 
 //        保存短信记录表： 手机号，验证码，有效期，是否使用，业务类型，发送时间， 使用时间
@@ -89,20 +91,23 @@ public class MemberService {
 
 //        发送短信，对接通道；
     }
-    public MemberLoginResp login(MemberLoginReq loginReq){
+    public CommonResponse login(MemberLoginReq loginReq){
+        CommonResponse<MemberLoginResp> response = new CommonResponse<>();
+        LOG.info(loginReq.toString());
         MemberLoginResp loginResp = new MemberLoginResp();
         String mobile = loginReq.getMobile();
         Member member = selectMemberByMobile(mobile);
-        LOG.info("接受到的手机号是{}", mobile);
 
-//        手机号不存在
-        if(member == null){
-            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_CODE_NOT_EXIST);
-        }
         verifyCode(loginReq);
         BeanUtil.copyProperties(member, loginResp);
         LOG.info("登陆成功，手机号是{}", mobile);
-        return loginResp;
+
+        Map<String, Object> map = BeanUtil.beanToMap(loginResp);
+        String key = "lyx12306";
+        String token = JWTUtil.createToken(map, key.getBytes());
+        loginResp.setToken(token);
+        response.setContent(loginResp);
+        return response;
 
 
 
@@ -119,6 +124,11 @@ public class MemberService {
     }
 
     private boolean verifyCode(MemberLoginReq loginReq){
+        //        手机号不存在
+        if(loginReq.getMobile() == null){
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_CODE_NOT_EXIST);
+        }
+
         MobileCodeInfo codeInfo = MobileCodeCache.mobileCodeCache.get(loginReq.getMobile());
         if(null == codeInfo){
             throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_CODE_NOT_EXIST);

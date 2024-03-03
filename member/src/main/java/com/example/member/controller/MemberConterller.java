@@ -17,10 +17,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/member")
@@ -41,16 +38,15 @@ public class MemberConterller {
         return memberService.register(resq);
     }
 
-    @GetMapping("send_code")
+    @PostMapping("send_code")
     public CommonResponse sendCode(@Valid @RequestBody  MemberSendMobileReq sendMobileReq){
         memberService.sendCode(sendMobileReq);
         return new CommonResponse<>();
 
     }
 
-    @GetMapping("/login")
-    public MemberLoginResp login(@Valid @RequestBody MemberLoginReq loginReq){
-        MemberLoginResp loginResp = memberService.login(loginReq);
-        return loginResp;
+    @PostMapping("/login")
+    public CommonResponse<MemberLoginResp> login(@Valid @RequestBody MemberLoginReq loginReq){
+        return memberService.login(loginReq);
     }
 }
