@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,14 +42,14 @@ public class MemberConterller {
     }
 
     @GetMapping("send_code")
-    public CommonResponse sendCode(@Valid MemberSendMobileReq sendMobileReq){
+    public CommonResponse sendCode(@Valid @RequestBody  MemberSendMobileReq sendMobileReq){
         memberService.sendCode(sendMobileReq);
         return new CommonResponse<>();
 
     }
 
     @GetMapping("/login")
-    public MemberLoginResp login(MemberLoginReq loginReq){
+    public MemberLoginResp login(@Valid @RequestBody MemberLoginReq loginReq){
         MemberLoginResp loginResp = memberService.login(loginReq);
         return loginResp;
     }
