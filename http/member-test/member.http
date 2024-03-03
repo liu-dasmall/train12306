@@ -1,7 +1,17 @@
+GET http://localhost:8000/member/member/send_code?mobile=18370800256
+Accept: application/json
+
+###
+GET http://localhost:8000/member/member/login?mobile=18370800256&code=10z6
+Accept: application/json
+
+###
 GET http://localhost:8000/member/member/count
 Accept: application/json
 
 ###
 
-GET http://localhost:8000/member/member/register?mobile=""
+GET http://localhost:8000/member/member/register?mobile="1111"
 Accept: application/json
+
+#

@@ -2,10 +2,7 @@
 <!--  在app.vue中，点击不同的按钮，显示不同的vue页面-->
 <!--  具体路径对应的vue, 在/router/index.js设置-->
 
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+
   <router-view/>
 </template>
 
