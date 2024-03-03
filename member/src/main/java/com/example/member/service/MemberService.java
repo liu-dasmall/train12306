@@ -15,6 +15,7 @@ import com.example.common.dto.MobileCodeInfo;
 import com.example.common.exception.BusinessException;
 import com.example.common.exception.BusinessExceptionEnum;
 import com.example.common.response.CommonResponse;
+import com.example.common.util.JwtUtil;
 import com.example.member.domain.Member;
 import com.example.member.domain.MemberExample;
 import com.example.member.mapper.MemberMapper;
@@ -91,8 +92,7 @@ public class MemberService {
 
 //        发送短信，对接通道；
     }
-    public CommonResponse login(MemberLoginReq loginReq){
-        CommonResponse<MemberLoginResp> response = new CommonResponse<>();
+    public MemberLoginResp login(MemberLoginReq loginReq){
         LOG.info(loginReq.toString());
         MemberLoginResp loginResp = new MemberLoginResp();
         String mobile = loginReq.getMobile();
@@ -102,12 +102,10 @@ public class MemberService {
         BeanUtil.copyProperties(member, loginResp);
         LOG.info("登陆成功，手机号是{}", mobile);
 
-        Map<String, Object> map = BeanUtil.beanToMap(loginResp);
-        String key = "lyx12306";
-        String token = JWTUtil.createToken(map, key.getBytes());
+        String token = JwtUtil.createToken(loginResp.getId(), loginResp.getMobile());
         loginResp.setToken(token);
-        response.setContent(loginResp);
-        return response;
+
+        return loginResp;
 
 
 

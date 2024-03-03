@@ -6,11 +6,11 @@
       </router-link>
     </div>
     <div style="float: right; color: white;">
-<!--      您好：{{member.mobile}} &nbsp;&nbsp;-->
-      你好
-<!--      <router-link to="/login" style="color: white;">-->
-<!--        退出登录-->
-<!--      </router-link>-->
+      您好：{{member.mobile}}
+
+      <router-link to="/login" style="color: white;">
+        退出登录
+      </router-link>
     </div>
     <a-menu
         v-model:selectedKeys="selectedKeys"

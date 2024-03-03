@@ -47,6 +47,8 @@ public class MemberConterller {
 
     @PostMapping("/login")
     public CommonResponse<MemberLoginResp> login(@Valid @RequestBody MemberLoginReq loginReq){
-        return memberService.login(loginReq);
+        CommonResponse<MemberLoginResp> response = new CommonResponse<>();
+        response.setContent(memberService.login(loginReq));
+        return response;
     }
 }
